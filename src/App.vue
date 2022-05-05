@@ -1,10 +1,8 @@
 <template>
   <div id="app">
-    <nav>
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </nav>
-    <router-view/>
+    <router-view />
+    <!--페이지 url이 변경또는 이동되었을때 url에 따라 뿌려지는 영역을 정의할 수 있는 router태그로
+        Vue Instance에 router를 연결했을 경우에만 사용가능. -->
   </div>
 </template>
 
