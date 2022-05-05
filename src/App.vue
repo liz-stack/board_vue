@@ -1,10 +1,24 @@
 <template>
-  <div id="app">
-    <router-view />
-    <!--페이지 url이 변경또는 이동되었을때 url에 따라 뿌려지는 영역을 정의할 수 있는 router태그로
-        Vue Instance에 router를 연결했을 경우에만 사용가능. -->
-  </div>
+  <div id="app">sdfsd</div>
 </template>
+<script>
+import axios from "axios";
+
+export default {
+  name: "App",
+  data() {
+    return {
+      messsage: axios
+        .get("http://localhost:8000/api/board")
+        .then(function (messsage) {
+          console.log(messsage);
+          console.log(messsage.data);
+        }),
+    };
+  },
+};
+//대부분은 import AppHeader from '@/components/.. 형식으로 불러오기만 하는 듯
+</script>
 
 <style>
 #app {
