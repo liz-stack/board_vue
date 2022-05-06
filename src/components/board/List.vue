@@ -1,23 +1,41 @@
 <template>
-  <div>
-    <h2>게시판 - 등록</h2>
-    <a href="javascript:;" @click="getList">GET 방식 데이터 접근</a>
-  </div>
+  <container>
+    <div>
+      <!-- 게시판 header -->
+      <div>
+        <h2>게시판 - 목록</h2>
+      </div>
+      <!-- 검색 -->
+      <div>등록일, 수정일, 카테고리, inputbox, 검색 버튼</div>
+    </div>
+    <div>
+      <div>총 게시글수</div>
+      <table>
+        <tr>
+          <th>카테고리</th>
+          <th>제목</th>
+          <th>작성자</th>
+          <th>조회수</th>
+          <th>등록일시</th>
+          <th>수정일시</th>
+        </tr>
+        <tr v-for="list in lists" v-bind:key="list.boardId">
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+          <td></td>
+        </tr>
+      </table>
+    </div>
+  </container>
 </template>
 
 <script>
 export default {
-  methods: {
-    getList() {
-      this.$axios
-        .get("http://localhost:8000/api/board")
-        .then((res) => {
-          console.log(res);
-        })
-        .then((err) => {
-          console.log(err);
-        });
-    },
+  data() {
+    return {};
   },
 };
 </script>

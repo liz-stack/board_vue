@@ -1,25 +1,20 @@
 <template>
-  <div id="app">sdfsd</div>
+  <div id="app">
+    <List />
+    <!-- 현재 라우터가 제공하는 컴포넌트가 렌더링 됨 -->
+  </div>
 </template>
 <script>
-import axios from "axios";
+import List from "@/components/board/List.vue";
 
+//대부분은 import AppHeader from '@/components/.. 형식으로 불러오기만 하는 듯
 export default {
   name: "App",
-  data() {
-    return {
-      messsage: axios
-        .get("http://localhost:8000/api/board")
-        .then(function (messsage) {
-          console.log(messsage);
-          console.log(messsage.data);
-        }),
-    };
+  components: {
+    List,
   },
 };
-//대부분은 import AppHeader from '@/components/.. 형식으로 불러오기만 하는 듯
 </script>
-
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

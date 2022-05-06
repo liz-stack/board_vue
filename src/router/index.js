@@ -1,19 +1,23 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Read from '@/components/Read'
-// import HelloWorld from '@/components/HelloWorld'; //메인 컴포넌트 호출
-// import List from "../components/board/List"
-//import Write from "../components/board/Write.vue"
+//import Home from '../views/Home.vue'
+
 
 //Vue와 VueRouter 연결
 Vue.use(VueRouter)
 
 const routes = [
   {
-    path: '/',
-    name: 'Read',
-    component: Read
+    path: '/list',
+    name: 'List',
+    component: () =>
+      import('../views/board/ListView.vue')
   },
+  /*  {
+     path: '/',
+     name: 'Main',
+     component: Home
+   }, */
   /*  {
      path: "/board/list", // 페이지의 url 이름
      name: "list",
