@@ -1,16 +1,14 @@
 <template>
   <div id="app">
+    <router-link to="/">Home</router-link>
     <!-- 현재 라우터가 제공하는 컴포넌트가 렌더링 됨 -->
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-import List from "@/components/board/List.vue";
-
 export default {
   name: "App",
-  components: {},
 };
 </script>
 

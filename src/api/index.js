@@ -1,7 +1,8 @@
 import axios from 'axios'
 
-const instance = axios.create({
+const config = axios.create({
     baseURL: 'http://localhost:8000/api',
+    //headers: { 'Content-Type': 'application/json' }
 })
 
 /**
@@ -9,12 +10,12 @@ const instance = axios.create({
  * @param {*} params 
  * @returns 
  */
-function getBoardListAPI(params) {
-    return instance.get('/board/list', params)
+function getBoardListAPI() {
+    return axios.get('${config.baseURL}/board.json')
 }
 
 
 export {
     getBoardListAPI
-
 }
+
