@@ -1,20 +1,19 @@
 <template>
   <div id="app">
-    <List />
     <!-- 현재 라우터가 제공하는 컴포넌트가 렌더링 됨 -->
+    <router-view></router-view>
   </div>
 </template>
+
 <script>
 import List from "@/components/board/List.vue";
 
-//대부분은 import AppHeader from '@/components/.. 형식으로 불러오기만 하는 듯
 export default {
   name: "App",
-  components: {
-    List,
-  },
+  components: {},
 };
 </script>
+
 <style>
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

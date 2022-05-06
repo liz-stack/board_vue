@@ -20,12 +20,12 @@
           <th>수정일시</th>
         </tr>
         <tr v-for="list in lists" v-bind:key="list.boardId">
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td></td>
+          <td>list.category</td>
+          <td>list.title</td>
+          <td>list.userName</td>
+          <td>list.viewCount</td>
+          <td>list.createDate</td>
+          <td>list.modifyDate</td>
         </tr>
       </table>
     </div>

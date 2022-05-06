@@ -7,17 +7,13 @@ import VueRouter from 'vue-router'
 Vue.use(VueRouter)
 
 const routes = [
+
   {
-    path: '/list',
+    path: '/',
     name: 'List',
     component: () =>
       import('../views/board/ListView.vue')
   },
-  /*  {
-     path: '/',
-     name: 'Main',
-     component: Home
-   }, */
   /*  {
      path: "/board/list", // 페이지의 url 이름
      name: "list",
