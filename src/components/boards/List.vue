@@ -17,13 +17,13 @@
           <th>등록일시</th>
           <th>수정일시</th>
         </tr>
-        <tr v-for="board in boards" v-bind:key="board.boardId">
+        <tr
+          v-for="board in boards"
+          v-bind:key="board.boardId"
+          @click="movePage(board.boardId)"
+        >
           <td>{{ board.category }}</td>
-          <td>
-            <!-- TODO: @click으로 했을때는 안먹힘?.?  -->
-
-            {{ board.title }}
-          </td>
+          <td>{{ board.title }}</td>
           <td>{{ board.userName }}</td>
           <td>{{ board.viewCount }}</td>
           <td>{{ board.createDate }}</td>
@@ -39,7 +39,7 @@
     <!-- 버튼 -->
     <div class="buttons">
       <button>목록</button>
-      <button @click="movePage('/write')">등록</button>
+      <button @click="register('/write')">등록</button>
     </div>
   </div>
 </template>
@@ -65,6 +65,16 @@ export default {
           console.log(e);
         });
     },
+
+    /* TODO 220509 boardId undefined */
+    movePage(boardId) {
+      this.$router.push({
+        name: "Detail",
+        params: {
+          boarId: this.body.boardId,
+        },
+      });
+    },
   },
   mounted() {
     this.getBoardList();
@@ -75,22 +85,6 @@ export default {
 <style scoped>
 .board table td:nth-child(1) span {
   cursor: pointer;
-}
-
-nav {
-  padding: 30px;
-}
-
-nav a {
-  font-weight: bold;
-  color: #2c3e50;
-}
-
-nav a.router-link-exact-active {
-  color: #42b983;
-}
-a {
-  text-decoration: none;
 }
 </style>
 

@@ -3,6 +3,8 @@ import VueRouter from 'vue-router'
 import Main from '../views/Main.vue'
 import Boards from '../views/Boards.vue'
 
+//components 
+
 //Vue와 VueRouter 연결
 Vue.use(VueRouter)
 
@@ -14,29 +16,30 @@ const routes = [
   },
   {
     path: '/boards',
-    name: 'Boards',
+    //name: 'Boards', 디폴트 자식 라우터가 있다면 부모라우터는 네임X , 쓰고싶다면 :to="{name: ~} 형식
     component: Boards,
     children: [
 
       {
         path: "",
+        name: 'List',
         component: () =>
           import('@/components/boards/List')
       },
 
       {
-        path: '/view',
+        path: ':boardId',
         name: 'Detail',
         component: () =>
           import('@/components/boards/Detail')
       }
 
+      //글수정
+
+      //글삭제
     ]
 
   },
-
-
-
 
 ]
 

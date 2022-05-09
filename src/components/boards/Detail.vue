@@ -8,23 +8,21 @@
     </div>
     <div class="board-contents">
       <div class="row">
-        <!-- <input type="hidden" v-model="boardItem.boardId" /> -->
-        <div class="boardDetail col-md-1">{{ boardItem.userName }}</div>
-        <div class="boardDetail col-md-4">
-          등록일시 {{ boardItem.createDate }}
-        </div>
-        <div class="boardDetail">수정일시{{ boardItem.modifyDate }}</div>
+        <!-- <input type="hidden" v-model="board.boardId" /> -->
+        <div class="boardDetail col-md-1">{{ board.userName }}</div>
+        <div class="boardDetail col-md-4">등록일시 {{ board.createDate }}</div>
+        <div class="boardDetail">수정일시{{ board.modifyDate }}</div>
       </div>
       <div class="board-main">
         <div class="board-header">
           <h3>
-            {{ boardItem.category }} <span> {{ boardItem.title }}</span>
-            <span> 조회수: {{ boardItem.viewCount }}</span>
+            {{ board.category }} <span> {{ board.title }}</span>
+            <span> 조회수: {{ board.viewCount }}</span>
           </h3>
         </div>
         <div class="board-content">
           <div>
-            {{ boardItem.content }}
+            {{ board.content }}
           </div>
           <!--TODO: 첨부파일 -->
         </div>
@@ -41,13 +39,14 @@
 </template>
 
 <script>
-import axios from "axios";
+import BoardSevice from "@/service/BoardSevice";
 
 export default {
   name: "Detail",
   data() {
+    const index = this.$route.params.boardId;
     return {
-      boardItem: {
+      board: {
         userName: "",
         createDate: "",
         modifyDate: "",
@@ -60,18 +59,17 @@ export default {
   },
 
   mounted() {
-    this.getBoardDetail();
+    this.getBoardDetailView(boardId);
   },
 
   methods: {
     DateFormat(row) {
       row.createDate.format("YYYY-MM-DD"), row.modifyDate.format("YYYY-MM-DD");
     },
-    getBoardDetail() {
-      this.axios
-        .get("http://localhost:8000/api/boards/" + this.$route.query.boardItem)
+    getBoardDetailView() {
+      BoardSevice.getBoardDetail
         .then((response) => {
-          this.boardItem = response.data;
+          this.board = response.data;
           console.log(response.data);
         })
         .catch((e) => {
