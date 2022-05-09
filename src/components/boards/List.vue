@@ -1,10 +1,8 @@
 <template>
-  <div>
+  <div class="container">
     <div>
       <!-- 게시판 header -->
-      <div>
-        <h2>게시판 - 목록</h2>
-      </div>
+
       <!-- 검색 -->
       <!-- <div>등록일, 수정일, 카테고리, inputbox, 검색 버튼</div> -->
     </div>
@@ -19,15 +17,19 @@
           <th>등록일시</th>
           <th>수정일시</th>
         </tr>
-        <tr v-for="boardItem in boardList" v-bind:key="boardItem.boardId">
-          <td>{{ boardItem.category }}</td>
-          <td>{{ boardItem.title }}</td>
-          <td>{{ boardItem.userName }}</td>
-          <td>{{ boardItem.viewCount }}</td>
-          <td>{{ boardItem.createDate }}</td>
-          <td>{{ boardItem.modifyDate }}</td>
+        <tr v-for="board in boards" v-bind:key="board.boardId">
+          <td>{{ board.category }}</td>
+          <td>
+            <!-- TODO: @click으로 했을때는 안먹힘?.?  -->
+
+            {{ board.title }}
+          </td>
+          <td>{{ board.userName }}</td>
+          <td>{{ board.viewCount }}</td>
+          <td>{{ board.createDate }}</td>
+          <td>{{ board.modifyDate }}</td>
         </tr>
-        <tr v-if="boardList.length == 0">
+        <tr v-if="boards.length == 0">
           <td>데이터가 없습니다.</td>
         </tr>
       </table>
@@ -37,35 +39,26 @@
     <!-- 버튼 -->
     <div class="buttons">
       <button>목록</button>
-      <!-- <button @click="movePage('/write')">등록</button> -->
+      <button @click="movePage('/write')">등록</button>
     </div>
   </div>
 </template>
 
 <script>
-import axios from "axios";
+import BoardService from "@/service/BoardSevice";
 
 export default {
+  name: "Boards",
   data() {
     return {
-      boardList: [],
+      boards: [],
     };
   },
-  mounted() {
-    this.getBoardList();
-  },
-  /*  created() { //생성되자마자 실행
-    getboardItemAPI()
-      .then((response) => (this.boardList = response.data.boardList))
-      .catch((error) => console.log(error));
-  }, */
-
   methods: {
     getBoardList() {
-      axios
-        .get("http://localhost:8000/api/board")
+      BoardService.getBoards()
         .then((response) => {
-          this.boardList = response.data;
+          this.boards = response.data;
           console.log(response.data);
         })
         .catch((e) => {
@@ -73,8 +66,32 @@ export default {
         });
     },
   },
+  mounted() {
+    this.getBoardList();
+  },
 };
 </script>
 
 <style scoped>
+.board table td:nth-child(1) span {
+  cursor: pointer;
+}
+
+nav {
+  padding: 30px;
+}
+
+nav a {
+  font-weight: bold;
+  color: #2c3e50;
+}
+
+nav a.router-link-exact-active {
+  color: #42b983;
+}
+a {
+  text-decoration: none;
+}
+</style>
+
 </style>

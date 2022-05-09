@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Main from '../views/Main.vue'
-
+import Boards from '../views/Boards.vue'
 
 //Vue와 VueRouter 연결
 Vue.use(VueRouter)
@@ -13,16 +13,30 @@ const routes = [
     component: Main
   },
   {
-    path: '/board/list',
-    name: 'List',
-    component: () =>
-      import('../views/board/ListView.vue')
+    path: '/boards',
+    name: 'Boards',
+    component: Boards,
+    children: [
+
+      {
+        path: "",
+        component: () =>
+          import('@/components/boards/List')
+      },
+
+      {
+        path: '/view',
+        name: 'Detail',
+        component: () =>
+          import('@/components/boards/Detail')
+      }
+
+    ]
+
   },
-  /*  {
-     path: "/board/list", // 페이지의 url 이름
-     name: "list",
-     component: List,     // 해당 url에서 표시될 컴포넌트
-   }, */
+
+
+
 
 ]
 

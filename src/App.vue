@@ -1,14 +1,17 @@
 <template>
   <div id="app">
-    <router-link to="/">Home</router-link>
-    <!-- 현재 라우터가 제공하는 컴포넌트가 렌더링 됨 -->
+    <AppHeader />
     <router-view></router-view>
   </div>
 </template>
 
 <script>
+import AppHeader from "@/components/common/AppHeader.vue";
 export default {
   name: "App",
+  components: {
+    AppHeader,
+  },
 };
 </script>
 
@@ -32,5 +35,8 @@ nav a {
 
 nav a.router-link-exact-active {
   color: #42b983;
+}
+a {
+  text-decoration: none;
 }
 </style>
