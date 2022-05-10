@@ -8,20 +8,20 @@
     </div>
     <div class="board-contents">
       <div class="rows">
-        <div class="row col-md-1">{{ boardDetail.userName }}</div>
-        <div class="row col-md-4">등록일시 {{ boardDetail.createDate }}</div>
-        <div class="row">수정일시{{ boardDetail.modifyDate }}</div>
+        <div class="row col-md-1">{{ userName }}</div>
+        <div class="row col-md-4">등록일시 {{ createDate }}</div>
+        <div class="row">수정일시{{ modifyDate }}</div>
       </div>
       <div class="board-main">
         <div class="board-header">
           <h3>
-            {{ boardDetail.category }} <span> {{ boardDetail.title }}</span>
-            <span> 조회수: {{ boardDetail.viewCount }}</span>
+            {{ category }} <span> {{ title }}</span>
+            <span> 조회수: {{ viewCount }}</span>
           </h3>
         </div>
         <div class="board-content">
           <div>
-            {{ boardDetail.content }}
+            {{ content }}
           </div>
           <!--TODO: 첨부파일 -->
         </div>
@@ -42,16 +42,22 @@ import BoardSevice from "@/service/BoardSevice";
 
 export default {
   name: "Detail",
+
   data() {
-    //const boardId = this.$route.params.boardId;
     return {
-      boardId: 0,
-      boardDetail: [],
+      body: this.$route.query,
+      boardId: "",
+      userName: "",
+      createDate: "",
+      modifyDate: "",
+      category: "",
+      title: "",
+      content: "",
     };
   },
 
   mounted() {
-    this.getBoardDetailAPI(this.$route.params.boardId);
+    this.getBoardDetailAPI();
   },
 
   methods: {
@@ -59,7 +65,7 @@ export default {
       row.createDate.format("YYYY-MM-DD"), row.modifyDate.format("YYYY-MM-DD");
     }, */
 
-    getBoardDetailAPI(boardId) {
+    getBoardDetailAPI() {
       BoardSevice.getBoardDetail
         .then((response) => {
           this.boardDetail = response.data;

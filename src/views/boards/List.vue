@@ -66,7 +66,7 @@ export default {
 
     /* TODO 220509 boardId undefined */
     clickDetail(boardId) {
-      this.$router.push(`boards/${boardId}`);
+      this.$router.push(`${boardId}`);
     },
   },
   mounted() {
