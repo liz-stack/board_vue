@@ -17,13 +17,11 @@
           <th>등록일시</th>
           <th>수정일시</th>
         </tr>
-        <tr
-          v-for="board in boards"
-          v-bind:key="board.boardId"
-          @click="movePage(board.boardId)"
-        >
+        <tr v-for="board in boards" v-bind:key="board.boardId">
           <td>{{ board.category }}</td>
-          <td>{{ board.title }}</td>
+          <td>
+            <a @click="clickDetail(board.boardId)">{{ board.title }}</a>
+          </td>
           <td>{{ board.userName }}</td>
           <td>{{ board.viewCount }}</td>
           <td>{{ board.createDate }}</td>
@@ -67,13 +65,8 @@ export default {
     },
 
     /* TODO 220509 boardId undefined */
-    movePage(boardId) {
-      this.$router.push({
-        name: "Detail",
-        params: {
-          boarId: this.body.boardId,
-        },
-      });
+    clickDetail(boardId) {
+      this.$router.push({ path: "/detail", query: { boardId: boardId } });
     },
   },
   mounted() {
@@ -86,6 +79,8 @@ export default {
 .board table td:nth-child(1) span {
   cursor: pointer;
 }
-</style>
 
+a {
+  cursor: pointer;
+}
 </style>
