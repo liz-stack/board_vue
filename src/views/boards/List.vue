@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div class="container mt-3">
     <div>
       <!-- 게시판 header -->
 
@@ -54,7 +54,7 @@ export default {
   },
   methods: {
     getBoardList() {
-      BoardService.getBoards()
+      BoardService.getBoardsAPI()
         .then((response) => {
           this.boards = response.data;
           console.log(response.data);
@@ -66,7 +66,7 @@ export default {
 
     /* TODO 220509 boardId undefined */
     clickDetail(boardId) {
-      this.$router.push({ path: "/detail", query: { boardId: boardId } });
+      this.$router.push(`boards/${boardId}`);
     },
   },
   mounted() {

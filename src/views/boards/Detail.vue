@@ -7,22 +7,21 @@
       </div>
     </div>
     <div class="board-contents">
-      <div class="row">
-        <!-- <input type="hidden" v-model="board.boardId" /> -->
-        <div class="boardDetail col-md-1">{{ board.userName }}</div>
-        <div class="boardDetail col-md-4">등록일시 {{ board.createDate }}</div>
-        <div class="boardDetail">수정일시{{ board.modifyDate }}</div>
+      <div class="rows">
+        <div class="row col-md-1">{{ boardDetail.userName }}</div>
+        <div class="row col-md-4">등록일시 {{ boardDetail.createDate }}</div>
+        <div class="row">수정일시{{ boardDetail.modifyDate }}</div>
       </div>
       <div class="board-main">
         <div class="board-header">
           <h3>
-            {{ board.category }} <span> {{ board.title }}</span>
-            <span> 조회수: {{ board.viewCount }}</span>
+            {{ boardDetail.category }} <span> {{ boardDetail.title }}</span>
+            <span> 조회수: {{ boardDetail.viewCount }}</span>
           </h3>
         </div>
         <div class="board-content">
           <div>
-            {{ board.content }}
+            {{ boardDetail.content }}
           </div>
           <!--TODO: 첨부파일 -->
         </div>
@@ -44,32 +43,26 @@ import BoardSevice from "@/service/BoardSevice";
 export default {
   name: "Detail",
   data() {
-    const index = this.$route.params.boardId;
+    //const boardId = this.$route.params.boardId;
     return {
-      board: {
-        userName: "",
-        createDate: "",
-        modifyDate: "",
-        category: "",
-        title: "",
-        viewCount: "",
-        content: "",
-      },
+      boardId: 0,
+      boardDetail: [],
     };
   },
 
   mounted() {
-    this.getBoardDetailView(boardId);
+    this.getBoardDetailAPI(this.$route.params.boardId);
   },
 
   methods: {
-    DateFormat(row) {
+    /*  DateFormat(row) {
       row.createDate.format("YYYY-MM-DD"), row.modifyDate.format("YYYY-MM-DD");
-    },
-    getBoardDetailView() {
+    }, */
+
+    getBoardDetailAPI(boardId) {
       BoardSevice.getBoardDetail
         .then((response) => {
-          this.board = response.data;
+          this.boardDetail = response.data;
           console.log(response.data);
         })
         .catch((e) => {
