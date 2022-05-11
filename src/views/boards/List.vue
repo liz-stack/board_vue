@@ -1,7 +1,5 @@
 <template>
   <v-container class="max-auto justify-center">
-    <br />
-
     <!-- 검색 -->
     <!-- TODO 등록일, 수정일, 카테고리, inputbox, 검색 버튼 -->
     <v-card outlined max-width="100%">
@@ -23,40 +21,43 @@
             ></v-text-field>
           </v-col>
           <v-col align-self="center" cols="12" md="1">
-            <button>검색</button>
+            <v-btn>검색</v-btn>
           </v-col>
         </v-row>
       </v-card-text>
-
-      <v-row>총 건</v-row>
-      <v-row>
-        <v-col>
-          <v-data-table
-            class="elevation-1"
-            @click:row="onClickRow"
-            :headers="headers"
-            :items="board"
-            :items-per-page="10"
-          >
-            <template slot="boards" slot-scope="props">
-              <td>{{ props.board.category }}</td>
-              <td>{{ props.board.title }}</td>
-              <td>{{ props.board.userName }}</td>
-              <td>{{ props.board.viewCount }}</td>
-              <td>{{ props.board.createDate }}</td>
-              <td>{{ props.board.modifyDate }}</td>
-            </template>
-          </v-data-table>
-        </v-col>
+      <v-col>
+        <v-data-table
+          class="elevation-1"
+          @click:row="onClickRow"
+          :headers="headers"
+          :items="document"
+          :items-per-page="10"
+          :footer-props="{
+            showFirstLastPage: true,
+            firstIcon: 'mdi-arrow-collapse-left',
+            lastIcon: 'mdi-arrow-collapse-right',
+            prevIcon: 'mdi-minus',
+            nextIcon: 'mdi-plus',
+          }"
+        >
+          <template slot="items" slot-scope="props">
+            <td>{{ props.item.category }}</td>
+            <td>{{ props.item.title }}</td>
+            <td>{{ props.item.userName }}</td>
+            <td>{{ props.item.viewCount }}</td>
+            <td>{{ props.item.createDate }}</td>
+            <td>{{ props.item.modifyDate }}</td>
+          </template>
+        </v-data-table>
+      </v-col>
+    </v-card>
+    <v-card>
+      <!-- 버튼 -->
+      <v-row align="center" justify="space-around">
+        <v-btn>목록</v-btn>
+        <v-btn @click="register('/write')">등록</v-btn>
       </v-row>
     </v-card>
-    <!-- 페이지네이션 -->
-    <div></div>
-    <!-- 버튼 -->
-    <v-row class="buttons">
-      <button>목록</button>
-      <button @click="register('/write')">등록</button>
-    </v-row>
   </v-container>
 </template>
 
@@ -73,15 +74,15 @@ export default {
         { text: "카테고리", align: "center", value: "category" },
         { text: "제목", align: "start", value: "title" },
         { text: "작성자", align: "center", value: "userName" },
-        { text: "작성일시", align: "center", value: "createDate" },
-        { text: "수정일시", align: "center", value: "modifyDate" },
         { text: "조회수", align: "center", value: "viewCount" },
+        { text: "등록일시", align: "center", value: "createDate" },
+        { text: "수정일시", align: "center", value: "modifyDate" },
       ],
-      boards: [],
+      document: [],
       conditions: [
-        { text: "글 번호", value: "docNo" },
         { text: "제목", value: "title" },
-        { text: "작성자", value: "writer" },
+        { text: "작성자", value: "userName" },
+        { text: "내용", value: "content" },
       ],
       searchType: "",
       searchValue: "",
@@ -103,6 +104,9 @@ export default {
     clickDetail(boardId) {
       this.$router.push(`${boardId}`);
     },
+    onClickRow(event, data) {
+      this.movePage("/detail?boardId" + data.boards.boardId);
+    },
   },
   mounted() {
     this.getBoardList();
@@ -111,11 +115,4 @@ export default {
 </script>
 
 <style scoped>
-.board table td:nth-child(1) span {
-  cursor: pointer;
-}
-
-a {
-  cursor: pointer;
-}
 </style>
