@@ -1,55 +1,90 @@
 <template>
-  <div class="container mt-3">
-    <div>
-      <!-- 게시판 header -->
+  <v-container class="max-auto justify-center">
+    <br />
 
-      <!-- 검색 -->
-      <!-- <div>등록일, 수정일, 카테고리, inputbox, 검색 버튼</div> -->
-    </div>
-    <div>
-      <div>총 건</div>
-      <table class="table">
-        <tr>
-          <th>카테고리</th>
-          <th>제목</th>
-          <th>작성자</th>
-          <th>조회수</th>
-          <th>등록일시</th>
-          <th>수정일시</th>
-        </tr>
-        <tr v-for="board in boards" v-bind:key="board.boardId">
-          <td>{{ board.category }}</td>
-          <td>
-            <a @click="clickDetail(board.boardId)">{{ board.title }}</a>
-          </td>
-          <td>{{ board.userName }}</td>
-          <td>{{ board.viewCount }}</td>
-          <td>{{ board.createDate }}</td>
-          <td>{{ board.modifyDate }}</td>
-        </tr>
-        <tr v-if="boards.length == 0">
-          <td>데이터가 없습니다.</td>
-        </tr>
-      </table>
-    </div>
+    <!-- 검색 -->
+    <!-- TODO 등록일, 수정일, 카테고리, inputbox, 검색 버튼 -->
+    <v-card outlined max-width="100%">
+      <v-card-text>
+        <v-row>
+          <v-col align-self="end" cols="12" md="2">
+            <v-select
+              v-model="searchType"
+              label="전체 카테고리"
+              :items="conditions"
+            ></v-select>
+          </v-col>
+          <v-col cols="12" md="6">
+            <v-text-field
+              v-model="searchValue"
+              label="검색어를 입력해 주세요. (제목+작성자+내용)"
+              single-line
+              @keypress.enter.prevent="getBoardList"
+            ></v-text-field>
+          </v-col>
+          <v-col align-self="center" cols="12" md="1">
+            <button>검색</button>
+          </v-col>
+        </v-row>
+      </v-card-text>
+
+      <v-row>총 건</v-row>
+      <v-row>
+        <v-col>
+          <v-data-table
+            class="elevation-1"
+            @click:row="onClickRow"
+            :headers="headers"
+            :items="board"
+            :items-per-page="10"
+          >
+            <template slot="boards" slot-scope="props">
+              <td>{{ props.board.category }}</td>
+              <td>{{ props.board.title }}</td>
+              <td>{{ props.board.userName }}</td>
+              <td>{{ props.board.viewCount }}</td>
+              <td>{{ props.board.createDate }}</td>
+              <td>{{ props.board.modifyDate }}</td>
+            </template>
+          </v-data-table>
+        </v-col>
+      </v-row>
+    </v-card>
     <!-- 페이지네이션 -->
     <div></div>
     <!-- 버튼 -->
-    <div class="buttons">
+    <v-row class="buttons">
       <button>목록</button>
       <button @click="register('/write')">등록</button>
-    </div>
-  </div>
+    </v-row>
+  </v-container>
 </template>
 
 <script>
 import BoardService from "@/service/BoardSevice";
+import Button from "@/components/common/Button.vue";
 
 export default {
+  components: { Button },
   name: "Boards",
   data() {
     return {
+      headers: [
+        { text: "카테고리", align: "center", value: "category" },
+        { text: "제목", align: "start", value: "title" },
+        { text: "작성자", align: "center", value: "userName" },
+        { text: "작성일시", align: "center", value: "createDate" },
+        { text: "수정일시", align: "center", value: "modifyDate" },
+        { text: "조회수", align: "center", value: "viewCount" },
+      ],
       boards: [],
+      conditions: [
+        { text: "글 번호", value: "docNo" },
+        { text: "제목", value: "title" },
+        { text: "작성자", value: "writer" },
+      ],
+      searchType: "",
+      searchValue: "",
     };
   },
   methods: {

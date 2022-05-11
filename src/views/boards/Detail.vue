@@ -1,40 +1,42 @@
 <template>
-  <div>
-    <div>
-      <!-- 게시판 header -->
-      <div>
+  <v-container>
+    <v-card>
+      <v-row>
+        <!-- 게시판 header -->
         <h2>게시판 - 보기</h2>
-      </div>
-    </div>
-    <div class="board-contents">
-      <div class="rows">
-        <div class="row col-md-1">{{ userName }}</div>
-        <div class="row col-md-4">등록일시 {{ createDate }}</div>
-        <div class="row">수정일시{{ modifyDate }}</div>
-      </div>
-      <div class="board-main">
-        <div class="board-header">
-          <h3>
+      </v-row>
+      <v-card-text class="board-contents">
+        <v-col class="rows">
+          <v-text-field class="row col-md-1">{{ userName }}</v-text-field>
+          <v-text-field class="row col-md-4"
+            >등록일시 {{ createDate }}</v-text-field
+          >
+          <v-text-field class="row">수정일시{{ modifyDate }}</v-text-field>
+        </v-col>
+      </v-card-text>
+      <v-card-text class="board-main">
+        <v-row class="board-header">
+          <v-col>
             {{ category }} <span> {{ title }}</span>
             <span> 조회수: {{ viewCount }}</span>
-          </h3>
-        </div>
-        <div class="board-content">
-          <div>
+          </v-col>
+        </v-row>
+        <v-row class="board-content">
+          <v-text-field>
             {{ content }}
-          </div>
+          </v-text-field>
           <!--TODO: 첨부파일 -->
-        </div>
-      </div>
+        </v-row>
+      </v-card-text>
       <!--TODO: 댓글 -->
       <!-- 버튼 -->
-      <div class="buttons">
+      <v-row class="buttons">
         <button>목록</button>
         <button>수정</button>
         <button @click="movePage('/write')">등록</button>
-      </div>
-    </div>
-  </div>
+      </v-row>
+    </v-card>
+  </v-container>
 </template>
 
 <script>
@@ -57,7 +59,7 @@ export default {
   },
 
   mounted() {
-    this.getBoardDetailAPI();
+    this.getBoardDetailAPI(boardId);
   },
 
   methods: {
@@ -65,7 +67,8 @@ export default {
       row.createDate.format("YYYY-MM-DD"), row.modifyDate.format("YYYY-MM-DD");
     }, */
 
-    getBoardDetailAPI() {
+    getBoardDetailAPI(boardId) {
+      this.boardId = $route.params.boardId;
       BoardSevice.getBoardDetail
         .then((response) => {
           this.boardDetail = response.data;

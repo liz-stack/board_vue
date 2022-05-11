@@ -7,4 +7,7 @@ module.exports = {
       .set('@', path.resolve(__dirname, 'src/'))
   },
 
+  transpileDependencies: [
+    'vuetify'
+  ]
 }

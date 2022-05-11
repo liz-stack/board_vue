@@ -1,13 +1,8 @@
 <template>
-  <header>
-    <div class="headerWrap">
-      <nav>
-        <router-link to="/"> Home </router-link>
-        <router-link to="/boards"> 게시판 </router-link>
-        <!-- 현재 라우터가 제공하는 컴포넌트가 렌더링 됨 -->
-      </nav>
-    </div>
-  </header>
+  <div class="headerWrap">
+    <br />
+    <v-spacer> <!-- 컴포넌트 사이에 빈 공간 생성 --> </v-spacer>
+  </div>
 </template>
 
 <script>

@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Main from '../views/Main.vue'
 import List from '../views/boards/List'
 
 //components 
@@ -9,18 +8,14 @@ import List from '../views/boards/List'
 Vue.use(VueRouter)
 
 const routes = [
-  {
-    path: '/',
-    name: 'Main',
-    component: Main
-  },
+
   /* {
     path: '/boards',
     //name: 'Boards', 디폴트 자식 라우터가 있다면 부모라우터는 네임X , 쓰고싶다면 :to="{name: ~} 형식
     component: Boards,
   }, */
   {
-    path: "/boards/",
+    path: "/",
     name: 'List',
     component: List,
 
@@ -31,7 +26,7 @@ const routes = [
     name: 'Detail',
     component: () =>
       import('@/views/boards/Detail')
-    //TODO: 220510 댓글, 파일첨부 자식으로 넣을 곳
+    //TODO: 220510 댓글, 파일첨부 넣을 곳(children)
   },
 
   //TODO: 글수정
