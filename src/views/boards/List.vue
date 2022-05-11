@@ -30,24 +30,17 @@
           class="elevation-1"
           @click:row="onClickRow"
           :headers="headers"
-          :items="document"
-          :items-per-page="10"
-          :footer-props="{
+          :items="boards"
+          :items-per-page="itemsPerPage"
+          hide-default-footer
+        >
+          <!-- :footer-props="{
             showFirstLastPage: true,
             firstIcon: 'mdi-arrow-collapse-left',
             lastIcon: 'mdi-arrow-collapse-right',
             prevIcon: 'mdi-minus',
             nextIcon: 'mdi-plus',
-          }"
-        >
-          <template slot="items" slot-scope="props">
-            <td>{{ props.item.category }}</td>
-            <td>{{ props.item.title }}</td>
-            <td>{{ props.item.userName }}</td>
-            <td>{{ props.item.viewCount }}</td>
-            <td>{{ props.item.createDate }}</td>
-            <td>{{ props.item.modifyDate }}</td>
-          </template>
+          }" -->
         </v-data-table>
       </v-col>
     </v-card>
@@ -70,6 +63,11 @@ export default {
   name: "Boards",
   data() {
     return {
+      page: 1,
+      pageCount: 0,
+      itemsPerPage: 10,
+      boards: [],
+
       headers: [
         { text: "카테고리", align: "center", value: "category" },
         { text: "제목", align: "start", value: "title" },
@@ -78,8 +76,8 @@ export default {
         { text: "등록일시", align: "center", value: "createDate" },
         { text: "수정일시", align: "center", value: "modifyDate" },
       ],
-      document: [],
       conditions: [
+        /* TODO: 카테고리로 바꿔야함 */
         { text: "제목", value: "title" },
         { text: "작성자", value: "userName" },
         { text: "내용", value: "content" },
