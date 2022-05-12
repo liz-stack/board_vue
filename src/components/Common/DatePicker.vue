@@ -4,6 +4,7 @@
     v-model="dateModal"
     :return-value.sync="date"
     :close-on-content-click="false"
+    persistent
     transition="scale-transition"
     offset-y
     min-width="auto"
@@ -20,8 +21,8 @@
     </template>
     <v-date-picker v-model="date" no-title scrollable>
       <v-spacer></v-spacer>
-      <v-btn color="primary" @click="dateModal = false">Cancel</v-btn>
-      <v-btn color="primary" @click="set()">OK</v-btn>
+      <v-btn color="secondary" @click="dateModal = false">Cancel</v-btn>
+      <v-btn color="secondary" @click="set()">OK</v-btn>
     </v-date-picker>
   </v-menu>
 </template>
@@ -35,7 +36,8 @@ export default {
   }),
   methods: {
     set() {
-      this.date = this.date + " " + this.time;
+      this.date = this.date;
+      /* TODO: ERROR Property 'save' does not exist on type 'Vue | Element | (Vue | Element)[]'. */
       this.$refs.menu.save(this.date);
     },
   },

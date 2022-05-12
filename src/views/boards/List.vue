@@ -6,7 +6,7 @@
       <v-card-text>
         <v-row>
           <!-- 날짜 기간검색 -->
-          <v-col cols="12" md="2">
+          <v-col>
             <DatePicker :label="'시작일'"></DatePicker>
           </v-col>
           <v-col>
@@ -34,13 +34,55 @@
         </v-row>
       </v-card-text>
       <v-col>
-        <v-data-table
+        <div>총 {{ totalCount }} 건</div>
+      </v-col>
+      <v-col>
+        <v-simple-table>
+          <thead>
+            <tr>
+              <td>카테고리</td>
+              <td>제목</td>
+              <td>작성자</td>
+              <td>조회수</td>
+              <td>등록일시</td>
+              <td>수정일시</td>
+            </tr>
+          </thead>
+          <tbody>
+            <tr
+              v-for="board in boards"
+              :key="board.boardId"
+              @click="clickDetail(board.boardId)"
+            >
+              <td>{{ board.category }}</td>
+              <td>{{ board.title }}</td>
+              <td>{{ board.userName }}</td>
+              <td>{{ board.viewCount }}</td>
+              <td>
+                <span
+                  >{{ board.createDate | moment("YYYY-MM-DD HH:mm") }}
+                </span>
+              </td>
+              <span>{{ board.modifyDate | moment("YYYY-MM-DD HH:mm") }} </span>
+            </tr>
+          </tbody>
+        </v-simple-table>
+
+        <!-- TODO: 날짜포맷 -->
+        <!-- <v-data-table
           class="elevation-1"
+          @click:row="onClickRow"
           :headers="headers"
           :items="boards"
-          @click:row="onClickRow"
+          :footer-props="{
+            showFirstLastPage: true,
+            firstIcon: 'mdi-chevron-double-left',
+            lastIcon: 'mdi-chevron-double-right',
+            prevIcon: 'mdi-chevron-left',
+            nextIcon: 'mdi-chevron-right',
+          }"
         >
-          <template slot="boards" slot-scope="props">
+          <template gslot="boards" slot-scope="props">
             <td>{{ props.item.category }}</td>
             <td>{{ props.item.title }}</td>
             <td>{{ props.item.userName }}</td>
@@ -48,14 +90,7 @@
             <td>{{ props.item.createDate }}</td>
             <td>{{ props.item.modifyDate }}</td>
           </template>
-          <!-- :footer-props="{
-            showFirstLastPage: true,
-            firstIcon: 'mdi-arrow-collapse-left',
-            lastIcon: 'mdi-arrow-collapse-right',
-            prevIcon: 'mdi-minus',
-            nextIcon: 'mdi-plus',
-          }" -->
-        </v-data-table>
+        </v-data-table> -->
       </v-col>
     </v-card>
     <v-card>
@@ -83,15 +118,17 @@ export default {
       pageCount: 0,
       itemsPerPage: 10,
       boards: [],
+      totalCount: 0,
 
-      headers: [
+      /* headers: [
         { text: "카테고리", align: "center", value: "category" },
         { text: "제목", align: "start", value: "title" },
         { text: "작성자", align: "center", value: "userName" },
         { text: "조회수", align: "center", value: "viewCount" },
         { text: "등록일시", align: "center", value: "createDate" },
         { text: "수정일시", align: "center", value: "modifyDate" },
-      ],
+      ], */
+
       conditions: [
         /* TODO: 카테고리로 바꿔야함 */
         { text: "제목", value: "title" },
@@ -123,10 +160,14 @@ export default {
         });
     },
 
-    /* TODO 220509 boardId undefined */
-    onClickRow(event, data) {
-      this.movePage("/detail?boardId" + data.item.boardId);
+    clickDetail(boardId) {
+      window.location.href =
+        window.location.pathname + "detail?boardId=" + boardId;
     },
+    /* TODO 220509 boardId undefined */
+    /*  onClickRow(event, data) {
+      this.movePage("/detail?boardId" + data.item.boardId);
+    }, */
   },
   mounted() {
     this.getBoardList();
