@@ -14,7 +14,7 @@
           </v-col>
           <v-col cols="12" md="6">
             <v-text-field
-              v-model="searchValue"
+              v-model="keyword"
               label="검색어를 입력해 주세요. (제목+작성자+내용)"
               single-line
               @keypress.enter.prevent="getBoardList"
@@ -67,7 +67,6 @@ export default {
       pageCount: 0,
       itemsPerPage: 10,
       boards: [],
-
       headers: [
         { text: "카테고리", align: "center", value: "category" },
         { text: "제목", align: "start", value: "title" },
@@ -83,7 +82,7 @@ export default {
         { text: "내용", value: "content" },
       ],
       searchType: "",
-      searchValue: "",
+      keyword: "",
     };
   },
   methods: {
@@ -99,11 +98,8 @@ export default {
     },
 
     /* TODO 220509 boardId undefined */
-    clickDetail(boardId) {
-      this.$router.push(`${boardId}`);
-    },
     onClickRow(event, data) {
-      this.movePage("/detail?boardId" + data.boards.boardId);
+      this.movePage("/boards/" + data.boards.boardId);
     },
   },
   mounted() {

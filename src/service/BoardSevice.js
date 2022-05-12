@@ -8,7 +8,7 @@ class BoardService {
         return axios.get(BASE_URL);
     }
     getBoardDetailAPI(boardId) {
-        return axios.get(BASE_URL + `/${boardId}`)
+        return axios.get(BASE_URL, { boardId: boardId })
     }
 }
 

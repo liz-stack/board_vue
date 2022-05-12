@@ -1,26 +1,25 @@
 <template>
   <v-container>
     <v-card>
-      <v-row>
+      <v-card-title>
         <!-- 게시판 header -->
-        <h2>게시판 - 보기</h2>
-      </v-row>
-      <v-card-text class="board-contents">
-        <v-col class="rows">
-          <v-text-field class="row col-md-1">{{ userName }}</v-text-field>
-          <v-text-field class="row col-md-4"
-            >등록일시 {{ createDate }}</v-text-field
-          >
-          <v-text-field class="row">수정일시{{ modifyDate }}</v-text-field>
-        </v-col>
-      </v-card-text>
-      <v-card-text class="board-main">
-        <v-row class="board-header">
-          <v-col>
-            {{ category }} <span> {{ title }}</span>
-            <span> 조회수: {{ viewCount }}</span>
-          </v-col>
+        <h3>게시판 - 보기</h3>
+      </v-card-title>
+      <v-card-text class="board-description">
+        <v-row>
+          <span>작성자{{ userName }}</span>
+          <span>등록일시 {{ createDate }}</span>
+          <span>수정일시{{ modifyDate }}</span>
         </v-row>
+
+        <v-row class="board-header">
+          <span>[{{ category }}]</span>
+          <span> {{ title }}</span>
+          <span> 조회수: {{ viewCount }}</span>
+        </v-row>
+
+        <v-spacer></v-spacer>
+
         <v-row class="board-content">
           <v-text-field>
             {{ content }}
@@ -30,10 +29,10 @@
       </v-card-text>
       <!--TODO: 댓글 -->
       <!-- 버튼 -->
-      <v-row class="buttons">
-        <button>목록</button>
-        <button>수정</button>
-        <button @click="movePage('/write')">등록</button>
+      <v-row align="center" justify="space-around">
+        <v-btn>목록</v-btn>
+        <v-btn>수정</v-btn>
+        <v-btn @click="movePage('/write')">등록</v-btn>
       </v-row>
     </v-card>
   </v-container>
@@ -53,13 +52,14 @@ export default {
       createDate: "",
       modifyDate: "",
       category: "",
+      viewCount: "",
       title: "",
       content: "",
     };
   },
 
   mounted() {
-    this.getBoardDetailAPI(boardId);
+    this.getBoardDetailAPI(this.boardId);
   },
 
   methods: {
@@ -67,16 +67,26 @@ export default {
       row.createDate.format("YYYY-MM-DD"), row.modifyDate.format("YYYY-MM-DD");
     }, */
 
-    getBoardDetailAPI(boardId) {
-      this.boardId = $route.params.boardId;
+    getBoardDetailAPI(boardI) {
       BoardSevice.getBoardDetail
         .then((response) => {
-          this.boardDetail = response.data;
-          console.log(response.data);
+          this.boardId = response.data.boardId;
+          this.userName = response.data.userName;
+          this.createDate = response.data.createDate;
+          this.modifyDate = response.data.modifyDate;
+          this.viewCount = response.data.viewCount;
+          this.category = response.data.category;
+          this.title = response.data.title;
+          this.content = response.data.content;
         })
         .catch((e) => {
           console.log(e);
         });
+    },
+  },
+  computed: {
+    param: function () {
+      return this.$route.params;
     },
   },
 };
