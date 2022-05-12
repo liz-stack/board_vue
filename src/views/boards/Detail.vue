@@ -39,7 +39,7 @@
 </template>
 
 <script>
-import BoardSevice from "@/service/BoardSevice";
+//import BoardService from "@/service/BoardService";
 
 export default {
   name: "Detail",
@@ -59,7 +59,7 @@ export default {
   },
 
   mounted() {
-    this.getBoardDetailAPI(this.boardId);
+    this.getBoardDetailAPI();
   },
 
   methods: {
@@ -67,8 +67,8 @@ export default {
       row.createDate.format("YYYY-MM-DD"), row.modifyDate.format("YYYY-MM-DD");
     }, */
 
-    getBoardDetailAPI(boardI) {
-      BoardSevice.getBoardDetail
+    getBoardDetailAPI() {
+      getBoardDetail
         .then((response) => {
           this.boardId = response.data.boardId;
           this.userName = response.data.userName;

@@ -5,6 +5,14 @@
     <v-card outlined max-width="100%">
       <v-card-text>
         <v-row>
+          <!-- 날짜 기간검색 -->
+          <v-col cols="12" md="2">
+            <DatePicker :label="'시작일'"></DatePicker>
+          </v-col>
+          <v-col>
+            <DatePicker :label="'종료일'"></DatePicker>
+          </v-col>
+          <!-- 카테고리 -->
           <v-col align-self="end" cols="12" md="2">
             <v-select
               v-model="searchType"
@@ -12,7 +20,7 @@
               :items="conditions"
             ></v-select>
           </v-col>
-          <v-col cols="12" md="6">
+          <v-col cols="12" md="5">
             <v-text-field
               v-model="keyword"
               label="검색어를 입력해 주세요. (제목+작성자+내용)"
@@ -28,12 +36,18 @@
       <v-col>
         <v-data-table
           class="elevation-1"
-          @click:row="onClickRow"
           :headers="headers"
           :items="boards"
-          :items-per-page="itemsPerPage"
-          hide-default-footer
+          @click:row="onClickRow"
         >
+          <template slot="boards" slot-scope="props">
+            <td>{{ props.item.category }}</td>
+            <td>{{ props.item.title }}</td>
+            <td>{{ props.item.userName }}</td>
+            <td>{{ props.item.viewCount }}</td>
+            <td>{{ props.item.createDate }}</td>
+            <td>{{ props.item.modifyDate }}</td>
+          </template>
           <!-- :footer-props="{
             showFirstLastPage: true,
             firstIcon: 'mdi-arrow-collapse-left',
@@ -47,19 +61,21 @@
     <v-card>
       <!-- 버튼 -->
       <v-row align="center" justify="space-around">
-        <v-btn>목록</v-btn>
-        <v-btn @click="register('/write')">등록</v-btn>
+        <Button @click="movePage('list')" btnName="목록"></Button>
+        <Button @click="movePage('write')" btnName="등록"></Button>
       </v-row>
     </v-card>
   </v-container>
 </template>
 
 <script>
-import BoardService from "@/service/BoardSevice";
+import BoardService from "@/service/BoardService";
+//import getBoardListAPI from "@/api/index";
 import Button from "@/components/common/Button.vue";
+import DatePicker from "@/components/common/DatePicker.vue";
 
 export default {
-  components: { Button },
+  components: { Button, DatePicker },
   name: "Boards",
   data() {
     return {
@@ -67,6 +83,7 @@ export default {
       pageCount: 0,
       itemsPerPage: 10,
       boards: [],
+
       headers: [
         { text: "카테고리", align: "center", value: "category" },
         { text: "제목", align: "start", value: "title" },
@@ -85,9 +102,18 @@ export default {
       keyword: "",
     };
   },
+
+  /*  watch: {
+    options: {
+      handler() {
+        this.getBoardList();
+      },
+      deep: true,
+    },
+  }, */
   methods: {
     getBoardList() {
-      BoardService.getBoardsAPI()
+      BoardService.getBoards()
         .then((response) => {
           this.boards = response.data;
           console.log(response.data);
@@ -99,7 +125,7 @@ export default {
 
     /* TODO 220509 boardId undefined */
     onClickRow(event, data) {
-      this.movePage("/boards/" + data.boards.boardId);
+      this.movePage("/detail?boardId" + data.item.boardId);
     },
   },
   mounted() {
