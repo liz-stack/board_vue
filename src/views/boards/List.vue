@@ -17,7 +17,7 @@
             <v-select
               v-model="searchType"
               label="전체 카테고리"
-              :items="conditions"
+              :items="category"
             ></v-select>
           </v-col>
           <v-col cols="12" md="5">
@@ -29,7 +29,7 @@
             ></v-text-field>
           </v-col>
           <v-col align-self="center" cols="12" md="1">
-            <v-btn>검색</v-btn>
+            <Button @click="getBoardList" :btnName="'검색'"></Button>
           </v-col>
         </v-row>
       </v-card-text>
@@ -37,7 +37,7 @@
         <div>총 {{ totalCount }} 건</div>
       </v-col>
       <v-col>
-        <v-simple-table>
+        <!--  <v-simple-table>
           <thead>
             <tr>
               <td>카테고리</td>
@@ -66,10 +66,10 @@
               <span>{{ board.modifyDate | moment("YYYY-MM-DD HH:mm") }} </span>
             </tr>
           </tbody>
-        </v-simple-table>
+        </v-simple-table> -->
 
-        <!-- TODO: 날짜포맷 -->
-        <!-- <v-data-table
+        <!-- TODO: 날짜포맷안됨 -->
+        <v-data-table
           class="elevation-1"
           @click:row="onClickRow"
           :headers="headers"
@@ -82,15 +82,28 @@
             nextIcon: 'mdi-chevron-right',
           }"
         >
-          <template gslot="boards" slot-scope="props">
+          <!-- <template v-slot="items" slot-scope="props">
             <td>{{ props.item.category }}</td>
             <td>{{ props.item.title }}</td>
             <td>{{ props.item.userName }}</td>
             <td>{{ props.item.viewCount }}</td>
-            <td>{{ props.item.createDate }}</td>
-            <td>{{ props.item.modifyDate }}</td>
-          </template>
-        </v-data-table> -->
+            <td>{{ props.item.createDate.toLocaleString }}</td>
+            <td>{{ props.item.modifyDate.toLocaleString }}</td>
+          </template> -->
+        </v-data-table>
+      </v-col>
+      <!-- pagination -->
+      <v-col>
+        <div class="text-center">
+          <v-pagination
+            v-model="page"
+            :length="totalPage"
+            first-icon="mdi-chevron-double-left"
+            last-icon="mdi-chevron-double-right"
+            prev-icon="mdi-chevron-left"
+            next-icon="mdi-chevron-right"
+          ></v-pagination>
+        </div>
       </v-col>
     </v-card>
     <v-card>
@@ -114,30 +127,46 @@ export default {
   name: "Boards",
   data() {
     return {
-      page: 1,
-      pageCount: 0,
-      itemsPerPage: 10,
       boards: [],
-      totalCount: 0,
+      page: 1, //현재 페이지번호
+      pageAmount: 10,
+      totalPage: 0,
 
-      /* headers: [
+      headers: [
         { text: "카테고리", align: "center", value: "category" },
         { text: "제목", align: "start", value: "title" },
         { text: "작성자", align: "center", value: "userName" },
         { text: "조회수", align: "center", value: "viewCount" },
         { text: "등록일시", align: "center", value: "createDate" },
         { text: "수정일시", align: "center", value: "modifyDate" },
-      ], */
+      ],
 
-      conditions: [
+      category: [
         /* TODO: 카테고리로 바꿔야함 */
-        { text: "제목", value: "title" },
-        { text: "작성자", value: "userName" },
-        { text: "내용", value: "content" },
+        "JAVA",
+        "Javascript",
+        "Database",
       ],
       searchType: "",
       keyword: "",
     };
+  },
+  created() {
+    this.getBoardList();
+  },
+  computed: {
+    startPage() {
+      return (this.page - 1) * this.pageAmount;
+    },
+    endPage() {
+      return this.startPage + this.pageAmount;
+    },
+    totalPage() {
+      return Math.ceil(this.boards.length / this.pageAmount);
+    },
+    calcData() {
+      return this.boards.slice(this.startPage, this.endPage);
+    },
   },
 
   /*  watch: {
@@ -168,9 +197,6 @@ export default {
     /*  onClickRow(event, data) {
       this.movePage("/detail?boardId" + data.item.boardId);
     }, */
-  },
-  mounted() {
-    this.getBoardList();
   },
 };
 </script>
