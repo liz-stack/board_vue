@@ -24,6 +24,7 @@
               v-model="keyword"
               label="검색어를 입력해 주세요. (제목+작성자+내용)"
               single-line
+              hide-details
               @keypress.enter.prevent="getBoardList"
             ></v-text-field>
           </v-col>
@@ -33,7 +34,8 @@
         </v-row>
       </v-card-text>
       <v-col>
-        <div>총 {{ totalCount }} 건</div>
+        <!--         <div>총 {{ totalCount }} 건</div>
+ -->
       </v-col>
       <v-col>
         <!--  <v-simple-table>
@@ -192,6 +194,7 @@ export default {
           console.log(e);
         });
     },
+
     /*  clickDetail(boardId) {
       window.location.href =
         window.location.pathname + "detail?boardId=" + boardId;
