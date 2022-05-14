@@ -37,7 +37,7 @@ export default {
   methods: {
     set() {
       this.date = this.date;
-      /* TODO: ERROR Property 'save' does not exist on type 'Vue | Element | (Vue | Element)[]'. */
+      /* ERROR Property 'save' does not exist on type 'Vue | Element | (Vue | Element)[]'. */
       this.$refs.menu.save(this.date);
     },
   },
