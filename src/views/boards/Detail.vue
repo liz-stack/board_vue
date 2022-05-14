@@ -39,7 +39,7 @@
 </template>
 
 <script>
-//import BoardService from "@/service/BoardService";
+import BoardService from "@/service/BoardService";
 
 export default {
   name: "Detail",

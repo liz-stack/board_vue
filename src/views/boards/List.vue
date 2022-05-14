@@ -14,9 +14,9 @@
           <!-- 카테고리 -->
           <v-col align-self="end" cols="12" md="2">
             <v-select
-              label="검색조건"
-              v-model="searchType"
-              :items="condition"
+              label="전체 카테고리"
+              v-model="searchCategory"
+              :items="searchOption"
             ></v-select>
           </v-col>
           <v-col cols="12" md="5">
@@ -24,7 +24,6 @@
               v-model="keyword"
               label="검색어를 입력해 주세요. (제목+작성자+내용)"
               single-line
-              hide-details
               @keypress.enter.prevent="getBoardList"
             ></v-text-field>
           </v-col>
@@ -34,8 +33,7 @@
         </v-row>
       </v-card-text>
       <v-col>
-        <!--         <div>총 {{ totalCount }} 건</div>
- -->
+        <div>총 {{ totalCount }} 건</div>
       </v-col>
       <v-col>
         <!--  <v-simple-table>
@@ -51,7 +49,7 @@
           </thead>
           <tbody>
             <tr
-              v-for="board in boards"
+              v-for="board in boardList"
               :key="board.boardId"
               @click="clickDetail(board.boardId)"
             >
@@ -73,7 +71,7 @@
           class="elevation-1"
           @click:row="onClickRow"
           :headers="headers"
-          :items="boards"
+          :items="boardList"
           :search="keyword"
           :footer-props="{
             showFirstLastPage: true,
@@ -104,8 +102,8 @@
     <v-card>
       <!-- 버튼 -->
       <v-row align="center" justify="space-around">
-        <Button @click="movePage('list')" btnName="목록"></Button>
-        <Button @click="movePage('write')" btnName="등록"></Button>
+        <Button @click="movePage('/')" btnName="목록"></Button>
+        <Button @click="movePage('/write')" btnName="등록"></Button>
       </v-row>
     </v-card>
   </v-container>
@@ -123,8 +121,8 @@ export default {
   name: "Boards",
   data() {
     return {
-      boards: [],
-      page: 1, //현재 페이지번호
+      boardList: [],
+      pageNum: 1, //현재 페이지번호
       pageAmount: 10,
 
       headers: [
@@ -141,14 +139,15 @@ export default {
         { text: "수정일시", align: "center", value: "modifyDate" },
       ],
 
-      condition: [
+      /*      searchOption: [
         { text: "제목", value: "title" },
         { text: "작성자", value: "userName" },
         { text: "내용", value: "content" },
         { text: "전체", values: "title || userName || content" },
-      ],
+      ], */
 
-      searchType: "",
+      searchOption: ["JAVA", "Javascript", "Database"],
+      searchCategory: "",
       keyword: "",
     };
   },
@@ -157,16 +156,16 @@ export default {
   },
   computed: {
     startPage() {
-      return (this.page - 1) * this.pageAmount;
+      return (this.pageNum - 1) * this.pageAmount;
     },
     endPage() {
       return this.startPage + this.pageAmount;
     },
     totalPage() {
-      return Math.ceil(this.boards.length / this.pageAmount);
+      return Math.ceil(this.boardList.length / this.pageAmount);
     },
     calcData() {
-      return this.boards.slice(this.startPage, this.endPage);
+      return this.boardList.slice(this.startPage, this.endPage);
     },
   },
 
@@ -186,21 +185,21 @@ export default {
     getBoardList() {
       BoardService.getBoards()
         .then((response) => {
-          this.boards = response.data;
+          this.boardList = response.data;
           console.log(response.data);
         })
         .catch((e) => {
           console.log(e);
         });
     },
-
     /*  clickDetail(boardId) {
       window.location.href =
         window.location.pathname + "detail?boardId=" + boardId;
     }, */
+
     /* TODO 220509 boardId undefined */
     onClickRow(event, data) {
-      this.movePage("/detail?boardId" + data.item.boardId);
+      this.movePage("/boards/" + data.item.boardId);
     },
   },
 };
